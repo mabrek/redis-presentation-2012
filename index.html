@@ -81,15 +81,16 @@ save 60 10000
 </section>
 
 <section class="slide">
-  <h2>RDB (cont.)</h2>
+  <h2>RDB: How does it work? </h2>
   <ul>
-    <li>fork a child process</li>
-    <li>child writes data snapshot</li>
+    <li>forks a child process</li>
+    <li>child starts writing data snapshot to temp file</li>
+    <li>when new file is done it replaces the old one</li>
   </ul>
 </section>
 
 <section class="slide">
-  <h2>RDB pros and cons</h2>
+  <h2>RDB: Pros and Cons</h2>
   <ul>
     <li>compact</li>
     <li>no IO done by parent process</li>
@@ -113,6 +114,41 @@ appendfsync everysec
   </pre>
 </section>
 
+<section class="slide">
+  <h2>AOF pros and cons</h2>
+  <ul>
+    <li>only one second is lost with everysec</li>
+    <li>fsync is done by background thread</li>
+    <li>file is append only, no seeks</li>
+    <li>could be rewritten to reduce size</li>
+    <li>all operations in understandable and editable format</li>
+  </ul>
+  <ul>
+    <li>files are bigger than RDB</li>
+    <li>can be slower than RDB</li>
+    <li>write could be blocked by fsync</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>AOF Rewriting</h2>
+  <ul>
+    <li>fork</li>
+    <li>child starts new AOF in temp file</li>
+    <li>parent buffers all the changes</li>
+    <li>at the same time parent continues old AOF</li>
+    <li>when child is done parent appends buffer to new file</li>
+    <li>replaces files and starts appending changes</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Random Notes</h2>
+  <ul>
+    <li>2x RAM requirement</li>
+    <li>replication uses RDB</li>
+  </ul>
+</section>
 
 <!-- End slides. -->
 
