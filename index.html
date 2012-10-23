@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=1024, user-scalable=no">
 
-	<title>Your deck.js Presentation</title>
+	<title>Redis Persistence</title>
 	
 	<!-- Required stylesheet -->
 	<link rel="stylesheet" href="imakewebthings-deck.js-069f632/core/deck.core.css">
@@ -32,16 +32,87 @@
 <!-- Begin slides. Just make elements with a class of slide. -->
 
 <section class="slide">
-	<h1>Slide</h1>
+  <h1>Redis Persistence</h1>
+  <p>Anton Lebedevich (<a href="https://github.com/mabrek">mabrek</a>)
 </section>
 
 <section class="slide">
-	<h1>Content</h1>
+  <h2>What is Redis?</h2>
+  <ul>
+    <li>key-value store</li>
+    <li>data structures: strings, hashes, lists, sets and sorted sets</li>
+    <li>atomic operations</li>
+    <li>in-memory dataset</li>
+    <li>periodic dataset dump and/or command log</li>
+    <li>master/slave replication</li>
+    <li>check-and-set (transactions)</li>
+    <li>pub/sub</li>
+    <li>lua scripting</li>
+  </ul>
 </section>
 
 <section class="slide">
-	<h1>Here</h1>
+  <h2>What's inside?</h2>
+  <ul>
+    <li>single-threaded</li>
+    <li>ANSI C</li>
+    <li>no external dependencies (actually there are several included)</li>
+  </ul>
 </section>
+
+<section class="slide">
+  <h2>Persistence options</h2>
+  <ul>
+    <li>RDB</li>
+    <li>AOF</li>
+    <li>both (AOF will be used on restart)</li>
+    <li>nothing</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>RDB</h2>
+  <p>Periodic snapshots, will save the DB if both the given number of seconds and the given number of write operations against the DB occurred.</p>
+  <pre>
+save 900 1
+save 300 10
+save 60 10000
+  </pre>
+</section>
+
+<section class="slide">
+  <h2>RDB (cont.)</h2>
+  <ul>
+    <li>fork a child process</li>
+    <li>child writes data snapshot</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>RDB pros and cons</h2>
+  <ul>
+    <li>compact</li>
+    <li>no IO done by parent process</li>
+    <li>fast restart</li>
+    <li>IO amount bound by dataset size</li>
+  </ul>
+  <ul>
+    <li>amount of data loss in case of crash or abrupt shutdown</li>
+    <li>fork could be long for large datasets</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>AOF</h2>
+  <p>Logs every write operation received by the server, that will be played again at server startup</p>
+  <pre>
+appendonly yes
+# appendfsync always
+appendfsync everysec
+# appendfsync no
+  </pre>
+</section>
+
 
 <!-- End slides. -->
 
