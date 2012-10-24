@@ -33,7 +33,6 @@
 
 <section class="slide">
   <h1>Redis Persistence</h1>
-  <p>Anton Lebedevich (<a href="https://github.com/mabrek">mabrek</a>)
 </section>
 
 <section class="slide">
@@ -117,7 +116,7 @@ appendfsync everysec
 <section class="slide">
   <h2>AOF pros and cons</h2>
   <ul>
-    <li>only one second is lost with everysec</li>
+    <li>max 2 second of data is lost with everysec</li>
     <li>fsync is done by background thread</li>
     <li>file is append only, no seeks</li>
     <li>could be rewritten to reduce size</li>
@@ -149,6 +148,13 @@ appendfsync everysec
     <li>replication uses RDB</li>
     <li>group commit with appendfsync always</li>
   </ul>
+</section>
+
+<section class="slide">
+    <h2>Q&amp;A</h2>
+    <p>Anton Lebedevich</p>
+    <p>mabrek@gmail.com</p>
+    <p><a href="https://github.com/mabrek">github.com/mabrek</a></p>
 </section>
 
 <!-- End slides. -->
